@@ -9,3 +9,65 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+model Article {
+  id          String    @id @default(uuid())
+  title       String
+  content     String
+  excerpt     String
+  author      String
+  status      String    @default("draft") // "draft" or "published" or "archived"
+  featured    Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  network   Network @relation(fields: [networkId], references: [id])
+  networkId String
+
+  categories    CategoriesOnArtcicle[]
+  notifications EmailNotification[]
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  color       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  articles CategoriesOnArtcicle[]
+}
+
+model CategoriesOnArtcicle {
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  articleId String
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  @@id([articleId, categoryId])
+}
+
+model Network {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  articles Article[]
+}
+
+model EmailNotification {
+  id         String   @id @default(uuid())
+  subject    String
+  articleId  String
+  recipients String // We will use a comma-separated string to store multiple email addresses for simplicity
+  status     String   @default("pending") // "pending", "sent", "failed"
+  sentAt     DateTime @default(now())
+
+  article Article @relation(fields: [articleId], references: [id])
+}
