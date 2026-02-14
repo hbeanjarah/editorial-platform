@@ -1,8 +1,9 @@
+import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client.js";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 
-const adapter = new PrismaBetterSqlite3({
-  url: process.env.DATABASE_URL || "file:./dev.db",
+const adapter = new PrismaLibSql({
+  url: process.env.DATABASE_URL ?? "",
 });
 
 const prisma = new PrismaClient({
@@ -51,8 +52,29 @@ async function main() {
     }),
   ]);
 
+  const [france, europe, international] = await Promise.all([
+    prisma.network.create({
+      data: {
+        name: "TARAM France",
+        description: "Réseau national français",
+      },
+    }),
+    prisma.network.create({
+      data: {
+        name: "TARAM Europe",
+        description: "Réseau européen",
+      },
+    }),
+    prisma.network.create({
+      data: {
+        name: "TARAM International",
+        description: "Réseau international",
+      },
+    }),
+  ]);
+
   console.log(
-    `Created: ${[techno, business, design, marketing].length} categories`,
+    `Created: ${[techno, business, design, marketing, france, europe, international].length} categories and networks`,
   );
 }
 
