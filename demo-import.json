@@ -1,0 +1,58 @@
+[
+  {
+    "title": "L'avenir de l'intelligence artificielle : entre promesses et réalités",
+    "content": "On parle beaucoup d’intelligence artificielle ces dernières années, et pour cause : elle s’invite peu à peu dans notre quotidien. Que ce soit à travers les assistants vocaux, les recommandations personnalisées ou encore les voitures autonomes, l’IA change notre façon de travailler et de consommer. Mais au-delà de l’effet de mode, elle soulève aussi des questions importantes sur l’emploi, l’éthique et la protection des données.",
+    "excerpt": "L’IA s’installe dans notre quotidien et pose de nouveaux défis.",
+    "author": "Marie Dupont",
+    "category": "Technologie",
+    "network": "TARAM France"
+  },
+  {
+    "title": "Quelles stratégies marketing adopter en 2026 ?",
+    "content": "Le marketing digital continue d’évoluer à grande vitesse. Entre l’essor de la vidéo courte, l’importance croissante des communautés et l’utilisation de la data, les marques doivent sans cesse s’adapter. En 2026, miser sur l’authenticité, la personnalisation et une vraie proximité avec son audience sera plus essentiel que jamais pour se démarquer.",
+    "excerpt": "Authenticité et personnalisation au cœur du marketing 2026.",
+    "author": "Pierre Martin",
+    "category": "Marketing",
+    "network": "TARAM Europe"
+  },
+  {
+    "title": "Test : réseau introuvable",
+    "content": "Cet article a été créé volontairement avec un réseau qui n’existe pas dans le système. L’objectif est de vérifier que la validation fonctionne correctement et que l’API retourne bien une erreur lorsque les données envoyées sont invalides.",
+    "excerpt": "Vérification de la gestion des erreurs côté API.",
+    "author": "Test User",
+    "category": "Business",
+    "network": "Réseau Inconnu"
+  },
+  {
+    "title": "Le design system : un investissement rentable pour les entreprises",
+    "content": "De plus en plus d'entreprises mettent en place des design systems pour uniformiser leurs interfaces et accélérer le développement. Un design system bien pensé permet de gagner du temps, de garder une cohérence visuelle et de faciliter la collaboration entre designers et développeurs.",
+    "excerpt": "Les avantages concrets d'un design system en entreprise",
+    "author": "Sophie Leroy",
+    "category": "Design",
+    "network": "TARAM France"
+  },
+  {
+    "title": "La transformation digitale des PME européennes",
+    "content": "Les petites et moyennes entreprises en Europe intensifient leur transformation digitale. Cloud computing, automatisation des processus et outils collaboratifs deviennent essentiels dans tous les secteurs, de l’industrie traditionnelle aux commerces de proximité, pour rester compétitives et innovantes.",
+    "excerpt": "Comment les PME européennes s'adaptent au numérique",
+    "author": "Luc Bernard",
+    "category": "Business",
+    "network": "TARAM Europe"
+  },
+  {
+    "title": "Accessibilité web : un enjeu majeur en 2026",
+    "content": "Rendre le web accessible à tous n'est plus une option. Avec les nouvelles réglementations européennes et une sensibilisation croissante, les entreprises doivent intégrer l’accessibilité dès la conception de leurs produits numériques afin de garantir une expérience inclusive pour tous les utilisateurs.",
+    "excerpt": "Pourquoi l’accessibilité web est incontournable",
+    "author": "Claire Dubois",
+    "category": "Technologie",
+    "network": "TARAM International"
+  },
+  {
+    "title": "Les réseaux sociaux B2B : LinkedIn et au-delà",
+    "content": "Le marketing B2B sur les réseaux sociaux ne se limite plus à LinkedIn. De nouvelles plateformes apparaissent et les stratégies de contenu évoluent constamment. Le personal branding, les newsletters et les vidéos courtes redéfinissent la manière dont les entreprises communiquent en ligne avec leurs clients professionnels.",
+    "excerpt": "Évolutions du marketing B2B sur les réseaux sociaux",
+    "author": "Antoine Moreau",
+    "category": "Marketing",
+    "network": "TARAM France"
+  }
+]
