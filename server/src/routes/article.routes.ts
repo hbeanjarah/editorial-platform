@@ -6,6 +6,8 @@ import {
   UpdateArticleSchema,
   StatusChangeSchema,
 } from "../models/article.model";
+import * as notificationController from "../controllers/notification.controller";
+import { SendNotificationSchema } from "../models/notification.model";
 
 const router = Router();
 
@@ -20,5 +22,10 @@ router.patch(
   articleController.changeStatus,
 );
 router.put("/:id", validate(UpdateArticleSchema), articleController.update);
+router.post(
+  "/:id/notify",
+  validate(SendNotificationSchema),
+  notificationController.sendNotification,
+);
 
 export default router;
