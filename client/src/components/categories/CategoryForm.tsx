@@ -6,7 +6,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { COLOR_PALETTE } from "@/lib/constant";
-import { useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
+import { Button } from "@/components/ui/button";
+import type { Category } from "@/types";
 
 type Props = {
   open: boolean;
@@ -16,9 +18,17 @@ type Props = {
     description: string;
     color: string;
   }) => void;
+  isLoading?: boolean;
+  category?: Category | null;
 };
 
-export default function CategoryForm({ open, onClose, onSubmit }: Props) {
+export default function CategoryForm({
+  open,
+  onClose,
+  onSubmit,
+  isLoading,
+  category,
+}: Props) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [color, setColor] = useState<string>(COLOR_PALETTE[0]);
@@ -31,6 +41,29 @@ export default function CategoryForm({ open, onClose, onSubmit }: Props) {
 
     onSubmit({ name: name.trim(), description: description.trim(), color });
   };
+
+  const updateCategory = useEffectEvent(
+    (currentCate: { name: string; description: string; color: string }) => {
+      setName(currentCate.name);
+      setDescription(currentCate.description);
+      setColor(currentCate.color);
+    },
+  );
+
+  useEffect(() => {
+    if (!open) return;
+
+    if (category) {
+      updateCategory(category);
+    } else {
+      updateCategory({
+        name: "",
+        description: "",
+        color: COLOR_PALETTE[0],
+      });
+    }
+  }, [open, category]);
+
   return (
     <Dialog open={open} onOpenChange={(_open) => !_open && onClose()}>
       <DialogContent>
@@ -75,6 +108,19 @@ export default function CategoryForm({ open, onClose, onSubmit }: Props) {
                 />
               ))}
             </div>
+          </div>
+          <div className="flex justify-end gap-2 pt-2">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Annuler
+            </Button>
+            <Button
+              type="submit"
+              disabled={isLoading || !name.trim()}
+              className="bg-brand
+  hover:bg-brand-hover"
+            >
+              {isLoading ? "..." : category ? "Modifier" : "Créer"}
+            </Button>
           </div>
         </form>
       </DialogContent>
