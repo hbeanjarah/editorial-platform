@@ -1,4 +1,4 @@
-import { paginate } from "../utils/pagination";
+import { paginate, paginationMeta } from "../utils/pagination";
 import { prisma } from "../lib/prisma";
 import { AppError } from "../middlewares/errorHandler";
 import {
@@ -55,7 +55,7 @@ export async function getAll(filter: ArticleFilter) {
     prisma.article.count({ where }),
   ]);
 
-  return { data, total, page, limit };
+  return { data, pagination: paginationMeta(total, page, limit) };
 }
 
 export async function getById(id: string) {
