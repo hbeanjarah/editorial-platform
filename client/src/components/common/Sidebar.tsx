@@ -14,7 +14,7 @@ export default function Sidebar() {
     <aside className="fixed top-0 left-0 h-screen w-60 bg-navy flex flex-col">
       <div className="p-6">
         <h1 className="text-xl font-bold text-white tracking-tight">
-          Editorial <span className="text-primary">CMS</span>
+          Editorial <span className="text-brand">CMS</span>
         </h1>
       </div>
 
@@ -28,7 +28,7 @@ export default function Sidebar() {
               `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
   transition-colors ${
     isActive
-      ? "bg-primary text-white"
+      ? "bg-brand text-white"
       : "text-zinc-400 hover:text-white hover:bg-white/5"
   }`
             }
