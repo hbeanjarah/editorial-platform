@@ -122,19 +122,22 @@ export async function changeStatus(id: string, status: string) {
 }
 
 export async function getStats() {
-  const [total, draft, published, archived, byNetwork] = await Promise.all([
-    prisma.article.count(),
-    prisma.article.count({ where: { status: "draft" } }),
-    prisma.article.count({ where: { status: "published" } }),
-    prisma.article.count({ where: { status: "archived" } }),
-    prisma.network.findMany({
-      include: { _count: { select: { articles: true } } },
-    }),
-  ]);
+  const [total, draft, published, archived, featured, byNetwork] =
+    await Promise.all([
+      prisma.article.count(),
+      prisma.article.count({ where: { status: "draft" } }),
+      prisma.article.count({ where: { status: "published" } }),
+      prisma.article.count({ where: { status: "archived" } }),
+      prisma.article.count({ where: { featured: true } }),
+      prisma.network.findMany({
+        include: { _count: { select: { articles: true } } },
+      }),
+    ]);
 
   return {
     total,
     byStatus: { draft, published, archived },
     byNetwork,
+    featured,
   };
 }
