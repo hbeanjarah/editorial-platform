@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Category } from "@/types";
 import { Badge } from "@/components/ui/badge";
+import ConfirmDialog from "../common/ConfirmModal";
 
 type TCategory = {
   name: string;
@@ -20,6 +21,10 @@ type TCategory = {
 };
 
 export default function CategoryList() {
+  const [toDeleteCategory, setToDeleteCategory] = useState<Category | null>(
+    null,
+  );
+
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
 
   const { mutate: createCategoryMutation, isPending: isCreating } =
@@ -120,7 +125,7 @@ export default function CategoryList() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => handleDeleteCategory(cat)}
+                  onClick={() => setToDeleteCategory(cat)}
                 >
                   <Trash2 size={14} />
                 </Button>
@@ -143,6 +148,17 @@ export default function CategoryList() {
         onSubmit={handleUpdateCategory}
         category={selectedCategory}
         isLoading={isUpdating}
+      />
+
+      <ConfirmDialog
+        open={!!toDeleteCategory}
+        onClose={() => setToDeleteCategory(null)}
+        onConfirm={() => {
+          if (toDeleteCategory) handleDeleteCategory(toDeleteCategory);
+          setToDeleteCategory(null);
+        }}
+        description={`Supprimer la catégorie "${toDeleteCategory?.name}" ? Cette action est
+  irréversible.`}
       />
     </>
   );
