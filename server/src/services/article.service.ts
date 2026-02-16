@@ -141,3 +141,13 @@ export async function getStats() {
     featured,
   };
 }
+
+export async function bulkChangeStatus(ids: string[], status: string) {
+  return prisma.article.updateMany({
+    where: { id: { in: ids } },
+    data: {
+      status,
+      publishedAt: status === "published" ? new Date() : undefined,
+    },
+  });
+}
