@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useNotifications } from "@/hooks/useNotification";
+import { useNotifications } from "@/hooks/useNotifications";
 import { formatDate } from "@/lib/date";
 import { Mail, CheckCircle, XCircle } from "lucide-react";
 
