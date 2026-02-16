@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNotifications } from "@/hooks/useNotification";
-import { formatDate } from "@/lib/formatDate";
+import { formatDate } from "@/lib/date";
 import { Mail, CheckCircle, XCircle } from "lucide-react";
 
 export default function RecentNotifications() {
