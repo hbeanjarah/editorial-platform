@@ -3,7 +3,11 @@ import { Pencil, Trash2, Star, Archive, RotateCcw, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { Article } from "@/types";
-import { useDeleteArticle, useUpdateArticleStatus } from "@/hooks/useArticles";
+import {
+  useDeleteArticle,
+  useUpdateArticle,
+  useUpdateArticleStatus,
+} from "@/hooks/useArticles";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
 import { formatDate } from "@/lib/date";
@@ -35,6 +39,7 @@ export default function ArticleTable({ articles }: Props) {
 
   const { mutate: deleteArticle } = useDeleteArticle();
   const { mutate: updateStatus } = useUpdateArticleStatus();
+  const { mutate: featuredArticle } = useUpdateArticle();
 
   const handleDeleteArticle = (id: string) => {
     deleteArticle(id, {
@@ -56,6 +61,19 @@ export default function ArticleTable({ articles }: Props) {
           toast.success(`Statut changé en
   ${statusLabel[status].text.toLowerCase()}`),
         onError: () => toast.error("Erreur changement de statut"),
+      },
+    );
+  };
+
+  const handleFeaturedArticle = (article: Article) => {
+    featuredArticle(
+      { id: article.id, body: { featured: !article.featured } },
+      {
+        onSuccess: () =>
+          toast.success(
+            article.featured ? "Retiré mis en avant" : "Mis en avant",
+          ),
+        onError: () => toast.error("Erreur mise en avant"),
       },
     );
   };
@@ -177,6 +195,22 @@ export default function ArticleTable({ articles }: Props) {
                       <RotateCcw size={14} />
                     </Button>
                   )}
+
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="cursor-pointer"
+                    onClick={() => handleFeaturedArticle(article)}
+                  >
+                    <Star
+                      size={14}
+                      className={
+                        article.featured
+                          ? "text-status-featured fill-status-featured"
+                          : "text-muted-foreground"
+                      }
+                    />
+                  </Button>
 
                   <Button
                     size="sm"
