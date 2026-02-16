@@ -12,3 +12,31 @@ export interface Category {
   color: string;
   _count?: { articles: number };
 }
+
+export interface Network {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface CategoryOnArticle {
+  articleId: string;
+  categoryId: string;
+  category: Category;
+}
+
+export interface Article {
+  id: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  author: string;
+  status: "draft" | "published" | "archived";
+  featured: boolean;
+  publishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  networkId: string;
+  network: Network;
+  categories: CategoryOnArticle[];
+}
