@@ -93,3 +93,20 @@ export async function changeStatus(
     next(err);
   }
 }
+
+export async function bulkChangeStatus(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const result = await articleService.bulkChangeStatus(
+      req.body.ids,
+      req.body.status,
+    );
+
+    res.json({ count: result.count });
+  } catch (err) {
+    next(err);
+  }
+}

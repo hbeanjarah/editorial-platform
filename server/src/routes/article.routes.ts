@@ -5,6 +5,7 @@ import {
   CreateArticleSchema,
   UpdateArticleSchema,
   StatusChangeSchema,
+  BulkStatusChangeSchema,
 } from "../models/article.model";
 import * as notificationController from "../controllers/notification.controller";
 import { SendNotificationSchema } from "../models/notification.model";
@@ -26,6 +27,12 @@ router.post(
   "/:id/notify",
   validate(SendNotificationSchema),
   notificationController.sendNotification,
+);
+
+router.patch(
+  "/bulk-status",
+  validate(BulkStatusChangeSchema),
+  articleController.bulkChangeStatus,
 );
 
 export default router;
