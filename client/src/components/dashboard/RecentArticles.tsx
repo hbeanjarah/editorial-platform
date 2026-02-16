@@ -1,37 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useGetArticles } from "@/hooks/useArticles";
+import { formatDate } from "@/lib/formatDate";
 
-const articles = [
-  {
-    title: "Refonte du parcours client B2B chez Renault",
-    date: "14 fév. 2026",
-    status: "published",
-    network: "TARAM France",
-  },
-  {
-    title: "Migration AWS vers GCP : retour d'expérience",
-    date: "11 fév. 2026",
-    status: "published",
-    network: "TARAM Europe",
-  },
-  {
-    title: "Pourquoi on a abandonné Figma pour Penpot",
-    date: "7 fév. 2026",
-    status: "published",
-    network: "TARAM France",
-  },
-  {
-    title: "RGPD 2026 : ce qui change pour les SaaS",
-    date: "2 fév. 2026",
-    status: "published",
-    network: "TARAM International",
-  },
-  {
-    title: "Notre stack technique après 3 ans de Next.js",
-    date: "28 jan. 2026",
-    status: "published",
-    network: "TARAM Europe",
-  },
-];
+const ARTICLE_LIMIT = 5;
 
 const statusLabel: Record<string, { text: string; class: string }> = {
   published: {
@@ -46,31 +17,40 @@ const statusLabel: Record<string, { text: string; class: string }> = {
 };
 
 export default function RecentArticles() {
+  const { data, isLoading } = useGetArticles({
+    status: "published",
+    limit: ARTICLE_LIMIT.toString(),
+  });
+  const articles = data?.data ?? [];
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-base">Articles récents</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {articles.map((a) => (
-          <div
-            key={a.title}
-            className="flex items-center justify-between gap-4"
-          >
-            <div className="min-w-0">
-              <p className="text-sm font-medium truncate">{a.title}</p>
-              <p className="text-xs text-muted-foreground">
-                {a.network} · {a.date}
-              </p>
-            </div>
-            <span
-              className={`text-xs font-medium px-2 py-0.5 rounded-full
+        {isLoading ? (
+          <p className="text-muted-foreground">Chargement...</p>
+        ) : articles.length === 0 ? (
+          <p className="text-muted-foreground text-sm">Aucun article publié</p>
+        ) : (
+          articles.map((a) => (
+            <div key={a.id} className="flex items-center justify-between gap-4">
+              <div className="min-w-0">
+                <p className="text-sm font-medium truncate">{a.title}</p>
+                <p className="text-xs text-muted-foreground">
+                  {a.network.name} · {formatDate(a.createdAt)}
+                </p>
+              </div>
+              <span
+                className={`text-xs font-medium px-2 py-0.5 rounded-full
   whitespace-nowrap ${statusLabel[a.status].class}`}
-            >
-              {statusLabel[a.status].text}
-            </span>
-          </div>
-        ))}
+              >
+                {statusLabel[a.status].text}
+              </span>
+            </div>
+          ))
+        )}
       </CardContent>
     </Card>
   );

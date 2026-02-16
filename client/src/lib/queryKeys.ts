@@ -10,4 +10,7 @@ export const queryKeys = {
   networks: {
     all: ["networks"] as const,
   },
+  notifications: {
+    all: ["notifications"] as const,
+  },
 };
