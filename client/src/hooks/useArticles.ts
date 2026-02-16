@@ -7,6 +7,7 @@ import {
   updateArticleStatus,
   updateArticle,
   getArticleById,
+  bulkUpdateArticleStatus,
 } from "@/services/articleService";
 import { queryKeys } from "@/lib/queryKeys";
 import type { ArticleFormData } from "@/types";
@@ -80,5 +81,17 @@ export function useGetArticleById(id: string) {
     queryKey: queryKeys.articles.detail(id),
     queryFn: () => getArticleById(id),
     enabled: !!id,
+  });
+}
+
+export function useBulkUpdateArticleStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ ids, status }: { ids: string[]; status: string }) =>
+      bulkUpdateArticleStatus(ids, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.articles.all({}) });
+    },
   });
 }

@@ -5,6 +5,7 @@ import { useGetArticles } from "@/hooks/useArticles";
 import ArticleFilters from "@/components/articles/ArticleFilters";
 import { useState } from "react";
 import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import BulkActions from "@/components/articles/BulkActions";
 
 export default function ArticlesPage() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function ArticlesPage() {
     networkId: "",
   });
   const [page, setPage] = useState(1);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const queryParams: Record<string, string> = { page: String(page) };
 
@@ -33,9 +35,10 @@ export default function ArticlesPage() {
   const { data, isLoading } = useGetArticles(queryParams);
   const pagination = data?.pagination;
 
-  const handleChaneFilter = (curentFilter: typeof filters) => {
+  const handleChangeFilter = (curentFilter: typeof filters) => {
     setFilters(curentFilter);
     setPage(1);
+    setSelectedIds([]);
   };
 
   return (
@@ -50,13 +53,21 @@ export default function ArticlesPage() {
           <Plus size={16} className="mr-1" /> Nouvel article
         </Button>
       </div>
-      <ArticleFilters filters={filters} onChange={handleChaneFilter} />
+      <ArticleFilters filters={filters} onChange={handleChangeFilter} />
 
       {isLoading ? (
         <p className="text-muted-foreground">Chargement...</p>
       ) : (
         <>
-          <ArticleTable articles={data?.data ?? []} />
+          <BulkActions
+            selectedIds={selectedIds}
+            onClear={() => setSelectedIds([])}
+          />
+          <ArticleTable
+            articles={data?.data ?? []}
+            selectedIds={selectedIds}
+            onSelectionChange={setSelectedIds}
+          />
           {pagination && pagination.totalPages > 1 && (
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
@@ -68,7 +79,10 @@ export default function ArticlesPage() {
                   size="sm"
                   variant="outline"
                   disabled={!pagination.hasPreviousPage}
-                  onClick={() => setPage(page - 1)}
+                  onClick={() => {
+                    setPage(page - 1);
+                    setSelectedIds([]);
+                  }}
                 >
                   <ChevronLeft size={16} /> Précédent
                 </Button>
@@ -76,7 +90,10 @@ export default function ArticlesPage() {
                   size="sm"
                   variant="outline"
                   disabled={!pagination.hasNextPage}
-                  onClick={() => setPage(page + 1)}
+                  onClick={() => {
+                    setPage(page + 1);
+                    setSelectedIds([]);
+                  }}
                 >
                   Suivant <ChevronRight size={16} />
                 </Button>

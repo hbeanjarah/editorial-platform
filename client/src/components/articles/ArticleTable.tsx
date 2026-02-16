@@ -11,6 +11,7 @@ import {
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
 import { formatDate } from "@/lib/date";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const statusLabel: Record<string, { text: string; class: string }> = {
   published: {
@@ -32,14 +33,24 @@ export const ArticleStatus = {
 
 interface Props {
   articles: Article[];
+  selectedIds: string[];
+  onSelectionChange: (ids: string[]) => void;
 }
 
-export default function ArticleTable({ articles }: Props) {
+export default function ArticleTable({
+  articles,
+  onSelectionChange,
+  selectedIds = [],
+}: Props) {
   const navigate = useNavigate();
 
   const { mutate: deleteArticle } = useDeleteArticle();
   const { mutate: updateStatus } = useUpdateArticleStatus();
   const { mutate: featuredArticle } = useUpdateArticle();
+
+  const allSelected =
+    articles.length > 0 &&
+    articles.every((a) => (selectedIds || []).includes(a.id));
 
   const handleDeleteArticle = (id: string) => {
     deleteArticle(id, {
@@ -78,6 +89,22 @@ export default function ArticleTable({ articles }: Props) {
     );
   };
 
+  const selectAllArticles = () => {
+    if (allSelected) {
+      onSelectionChange([]);
+    } else {
+      onSelectionChange(articles.map((a) => a.id));
+    }
+  };
+
+  const selectArticle = (id: string) => {
+    if (selectedIds.includes(id)) {
+      onSelectionChange(selectedIds.filter((s) => s !== id));
+    } else {
+      onSelectionChange([...selectedIds, id]);
+    }
+  };
+
   if (articles.length === 0) {
     return (
       <p className="text-center text-muted-foreground py-10">
@@ -91,6 +118,13 @@ export default function ArticleTable({ articles }: Props) {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b bg-muted/50">
+            <th className="p-3 w-10">
+              <Checkbox
+                checked={allSelected}
+                onCheckedChange={selectAllArticles}
+                className="cursor-pointer"
+              />
+            </th>
             <th className="text-left p-3 font-medium">Titre</th>
             <th className="text-left p-3 font-medium">Auteur</th>
             <th className="text-left p-3 font-medium">Statut</th>
@@ -103,6 +137,14 @@ export default function ArticleTable({ articles }: Props) {
         <tbody>
           {articles.map((article) => (
             <tr key={article.id} className="border-b hover:bg-muted/30">
+              <td className="p-3">
+                <Checkbox
+                  checked={(selectedIds || []).includes(article.id)}
+                  onCheckedChange={() => selectArticle(article.id)}
+                  className="cursor-pointer"
+                />
+              </td>
+
               <td className="p-3">
                 <div className="flex items-center gap-2">
                   <span className="font-medium">{article.title}</span>

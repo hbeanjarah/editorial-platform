@@ -53,3 +53,12 @@ export async function updateArticle(
 
   return data;
 }
+
+export async function bulkUpdateArticleStatus(
+  ids: string[],
+  status: string,
+): Promise<{ count: number }> {
+  const { data } = await api.patch("/articles/bulk-status", { ids, status });
+
+  return data;
+}
