@@ -14,18 +14,7 @@ import { formatDate } from "@/lib/date";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import ConfirmDialog from "../common/ConfirmModal";
-
-const statusLabel: Record<string, { text: string; class: string }> = {
-  published: {
-    text: "Publié",
-    class: "bg-status-published/10 text-status-published",
-  },
-  draft: { text: "Brouillon", class: "bg-status-draft/10 text-status-draft" },
-  archived: {
-    text: "Archivé",
-    class: "bg-status-archived/10 text-status-archived",
-  },
-};
+import { statusLabel } from "@/lib/status";
 
 export const ArticleStatus = {
   Draft: "draft",
