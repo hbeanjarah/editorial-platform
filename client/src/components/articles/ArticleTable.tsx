@@ -6,7 +6,7 @@ import type { Article } from "@/types";
 import { useDeleteArticle, useUpdateArticleStatus } from "@/hooks/useArticles";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
-import { formatDate } from "@/lib/formatDate";
+import { formatDate } from "@/lib/date";
 
 const statusLabel: Record<string, { text: string; class: string }> = {
   published: {

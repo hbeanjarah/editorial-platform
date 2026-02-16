@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetArticles } from "@/hooks/useArticles";
-import { formatDate } from "@/lib/formatDate";
+import { formatDate } from "@/lib/date";
 
 const ARTICLE_LIMIT = 5;
 
