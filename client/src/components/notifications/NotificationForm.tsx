@@ -15,6 +15,8 @@ import { toast } from "sonner";
 import { AxiosError } from "axios";
 
 export default function NotifyForm() {
+  const [emailPreview, setEmailPreview] = useState<string | null>(null);
+
   const { data } = useGetArticles({ status: "published", limit: "50" });
   const articles = data?.data ?? [];
 
@@ -24,8 +26,6 @@ export default function NotifyForm() {
   const [articleId, setArticleId] = useState("");
   const [subject, setSubject] = useState("");
   const [recipients, setRecipients] = useState("");
-
-  //   const selectedArticle = articles.find((a) => a.id === articleId);
 
   const handleArticleChange = (id: string) => {
     setArticleId(id);
@@ -40,11 +40,12 @@ export default function NotifyForm() {
     sendNotificationMutation(
       { articleId, subject, recipients: recipients.trim() },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           toast.success("Notification envoyée");
           setArticleId("");
           setSubject("");
           setRecipients("");
+          setEmailPreview(data.htmlContent);
         },
         onError: (err) => {
           const message =
@@ -57,51 +58,75 @@ export default function NotifyForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Label>Article</Label>
-        <Select value={articleId} onValueChange={handleArticleChange}>
-          <SelectTrigger>
-            <SelectValue placeholder="Sélectionner un article" />
-          </SelectTrigger>
-          <SelectContent>
-            {articles.map((a) => (
-              <SelectItem key={a.id} value={a.id}>
-                {a.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+    <>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <Label>Article</Label>
+          <Select value={articleId} onValueChange={handleArticleChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionner un article" />
+            </SelectTrigger>
+            <SelectContent>
+              {articles.map((a) => (
+                <SelectItem key={a.id} value={a.id}>
+                  {a.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div>
-        <Label>Sujet</Label>
-        <Input
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          placeholder="Sujet de l'email"
-        />
-      </div>
+        <div>
+          <Label>Sujet</Label>
+          <Input
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            placeholder="Sujet de l'email"
+          />
+        </div>
 
-      <div>
-        <Label>Destinataires</Label>
-        <Input
-          value={recipients}
-          onChange={(e) => setRecipients(e.target.value)}
-          placeholder="email1@ex.com, email2@ex.com"
-        />
-        <p className="text-xs text-muted-foreground mt-1">
-          Séparez les emails par des virgules
-        </p>
-      </div>
+        <div>
+          <Label>Destinataires</Label>
+          <Input
+            value={recipients}
+            onChange={(e) => setRecipients(e.target.value)}
+            placeholder="email1@ex.com, email2@ex.com"
+          />
+          <p className="text-xs text-muted-foreground mt-1">
+            Séparez les emails par des virgules
+          </p>
+        </div>
 
-      <Button
-        type="submit"
-        disabled={isSending || !articleId || !recipients.trim()}
-        className="bg-brand hover:bg-brand-hover"
-      >
-        {isSending ? "Envoi..." : "Envoyer la notification"}
-      </Button>
-    </form>
+        <Button
+          type="submit"
+          disabled={isSending || !articleId || !recipients.trim()}
+          className="bg-brand hover:bg-brand-hover"
+        >
+          {isSending ? "Envoi..." : "Envoyer la notification"}
+        </Button>
+      </form>
+      {emailPreview && (
+        <div className="mt-6 space-y-2">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium">Prévisualisation de l'email</h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setEmailPreview(null)}
+            >
+              Fermer
+            </Button>
+          </div>
+          <div className="rounded-md border">
+            <iframe
+              srcDoc={emailPreview}
+              title="Prévisualisation email"
+              className="w-full h-96 rounded-md"
+              sandbox="" // Isoler le contenu pour des raisons de sécurité
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
