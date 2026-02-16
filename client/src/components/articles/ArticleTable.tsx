@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router";
-import { Pencil, Trash2, Star, Archive } from "lucide-react";
+import { Pencil, Trash2, Star, Archive, RotateCcw, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { Article } from "@/types";
+import { useDeleteArticle, useUpdateArticleStatus } from "@/hooks/useArticles";
+import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 const statusLabel: Record<string, { text: string; class: string }> = {
   published: {
@@ -16,6 +19,12 @@ const statusLabel: Record<string, { text: string; class: string }> = {
   },
 };
 
+export const ArticleStatus = {
+  Draft: "draft",
+  Published: "published",
+  Archived: "archived",
+} as const;
+
 interface Props {
   articles: Article[];
 }
@@ -23,12 +32,39 @@ interface Props {
 export default function ArticleTable({ articles }: Props) {
   const navigate = useNavigate();
 
+  const { mutate: deleteArticle } = useDeleteArticle();
+  const { mutate: updateStatus } = useUpdateArticleStatus();
+
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString("fr-FR", {
       day: "numeric",
       month: "short",
       year: "numeric",
     });
+  };
+
+  const handleDeleteArticle = (id: string) => {
+    deleteArticle(id, {
+      onSuccess: () => toast.success("Article supprimé"),
+      onError: (err) => {
+        const message =
+          (err as AxiosError<{ error: string }>).response?.data?.error ??
+          "Erreur suppression";
+        toast.error(message);
+      },
+    });
+  };
+
+  const handleChangeStatus = (id: string, status: string) => {
+    updateStatus(
+      { id, status },
+      {
+        onSuccess: () =>
+          toast.success(`Statut changé en
+  ${statusLabel[status].text.toLowerCase()}`),
+        onError: () => toast.error("Erreur changement de statut"),
+      },
+    );
   };
 
   if (articles.length === 0) {
@@ -109,10 +145,52 @@ export default function ArticleTable({ articles }: Props) {
                   >
                     <Pencil size={14} />
                   </Button>
-                  <Button size="sm" variant="ghost" className="cursor-pointer">
-                    <Archive size={14} />
-                  </Button>
-                  <Button size="sm" variant="ghost" className="cursor-pointer">
+
+                  {article.status === ArticleStatus.Draft && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        handleChangeStatus(article.id, ArticleStatus.Published)
+                      }
+                    >
+                      <Send size={14} />
+                    </Button>
+                  )}
+
+                  {article.status === ArticleStatus.Published && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        handleChangeStatus(article.id, ArticleStatus.Archived)
+                      }
+                    >
+                      <Archive size={14} />
+                    </Button>
+                  )}
+
+                  {article.status === ArticleStatus.Archived && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="cursor-pointer"
+                      onClick={() =>
+                        handleChangeStatus(article.id, ArticleStatus.Draft)
+                      }
+                    >
+                      <RotateCcw size={14} />
+                    </Button>
+                  )}
+
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="cursor-pointer"
+                    onClick={() => handleDeleteArticle(article.id)}
+                  >
                     <Trash2 size={14} />
                   </Button>
                 </div>

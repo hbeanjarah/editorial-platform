@@ -28,3 +28,16 @@ export async function getAllArticles(
 
   return data;
 }
+
+export async function deleteArticle(id: string): Promise<void> {
+  await api.delete(`/articles/${id}`);
+}
+
+export async function updateArticleStatus(
+  id: string,
+  status: string,
+): Promise<Article> {
+  const { data } = await api.patch(`/articles/${id}/status`, { status });
+
+  return data;
+}
