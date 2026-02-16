@@ -58,3 +58,13 @@ export type ArticleFormData = Pick<
 > & {
   categoryIds: string[];
 };
+
+export interface Notification {
+  id: string;
+  subject: string;
+  recipients: string;
+  status: "sent" | "failed";
+  sentAt: string;
+  articleId: string;
+  article: { id: string; title: string };
+}

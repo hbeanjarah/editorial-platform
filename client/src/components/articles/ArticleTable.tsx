@@ -6,6 +6,7 @@ import type { Article } from "@/types";
 import { useDeleteArticle, useUpdateArticleStatus } from "@/hooks/useArticles";
 import { toast } from "sonner";
 import type { AxiosError } from "axios";
+import { formatDate } from "@/lib/formatDate";
 
 const statusLabel: Record<string, { text: string; class: string }> = {
   published: {
@@ -34,14 +35,6 @@ export default function ArticleTable({ articles }: Props) {
 
   const { mutate: deleteArticle } = useDeleteArticle();
   const { mutate: updateStatus } = useUpdateArticleStatus();
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("fr-FR", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
 
   const handleDeleteArticle = (id: string) => {
     deleteArticle(id, {
