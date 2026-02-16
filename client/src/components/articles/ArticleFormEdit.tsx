@@ -5,8 +5,9 @@ import ArticlePreview from "@/components/articles/ArticlePreview";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { Article, ArticleFormData } from "@/types";
+import { useAutoSave } from "@/hooks/useAutoSave";
 
 export default function ArticleEditFormInner({
   article,
@@ -16,6 +17,7 @@ export default function ArticleEditFormInner({
   const navigate = useNavigate();
   const updateMutation = useUpdateArticle();
 
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [formData, setFormData] = useState<ArticleFormData>({
     title: article.title,
     content: article.content,
@@ -25,6 +27,15 @@ export default function ArticleEditFormInner({
     networkId: article.networkId,
     featured: article.featured,
   });
+
+  const autoSave = useCallback(() => {
+    updateMutation.mutate(
+      { id: article.id, body: formData },
+      {
+        onSuccess: () => setLastSaved(new Date()),
+      },
+    );
+  }, [formData, article.id, updateMutation]);
 
   const handleSubmit = () => {
     updateMutation.mutate(
@@ -44,10 +55,21 @@ export default function ArticleEditFormInner({
     );
   };
 
+  useAutoSave(autoSave, formData); // Auto-save every 30 seconds if there are changes
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Modifier l'article</h1>
+        <div>
+          <h1 className="text-2xl font-bold">Modifier l'article</h1>
+          {lastSaved && (
+            <p className="text-xs text-emerald-600 flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Sauvegardé à {lastSaved.toLocaleTimeString("fr-FR")}
+            </p>
+          )}
+        </div>
+
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => navigate("/articles")}>
             Annuler

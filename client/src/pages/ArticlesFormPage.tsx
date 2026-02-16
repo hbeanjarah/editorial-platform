@@ -23,6 +23,8 @@ export default function ArticleFormPage() {
     featured: false,
   });
 
+  const isDirty = formData.title !== "" || formData.content !== "";
+
   const handleSubmit = () => {
     createArticleMutation(formData, {
       onSuccess: () => {
@@ -41,7 +43,16 @@ export default function ArticleFormPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Nouvel article</h1>
+        <div>
+          <h1 className="text-2xl font-bold">Nouvel article</h1>
+          {isDirty && (
+            <p className="text-xs text-orange-500 flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-orange-500 animate-pulse" />
+              Modifications non enregistrées
+            </p>
+          )}
+        </div>
+
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => navigate("/articles")}>
             Annuler
