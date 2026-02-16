@@ -40,3 +40,14 @@ export interface Article {
   network: Network;
   categories: CategoryOnArticle[];
 }
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: {
+    total: number;
+    totalPages: number;
+    page: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+}

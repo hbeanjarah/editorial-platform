@@ -1,3 +1,90 @@
+import ArticleTable from "@/components/articles/ArticleTable";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
+import { useGetArticles } from "@/hooks/useArticles";
+import ArticleFilters from "@/components/articles/ArticleFilters";
+import { useState } from "react";
+import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
+
 export default function ArticlesPage() {
-  return <h1 className="text-2xl font-semibold">Articles</h1>;
+  const navigate = useNavigate();
+
+  const [filters, setFilters] = useState({
+    search: "",
+    status: "",
+    categoryId: "",
+    networkId: "",
+  });
+  const [page, setPage] = useState(1);
+
+  const queryParams: Record<string, string> = { page: String(page) };
+
+  if (filters.search) queryParams.search = filters.search;
+
+  if (filters.status && filters.status !== "all")
+    queryParams.status = filters.status;
+
+  if (filters.categoryId && filters.categoryId !== "all")
+    queryParams.categoryId = filters.categoryId;
+
+  if (filters.networkId && filters.networkId !== "all")
+    queryParams.networkId = filters.networkId;
+
+  const { data, isLoading } = useGetArticles(queryParams);
+  const pagination = data?.pagination;
+
+  const handleChaneFilter = (curentFilter: typeof filters) => {
+    setFilters(curentFilter);
+    setPage(1);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Articles</h1>
+        <Button
+          onClick={() => navigate("/articles/new")}
+          className="bg-brand
+  hover:bg-brand-hover cursor-pointer"
+        >
+          <Plus size={16} className="mr-1" /> Nouvel article
+        </Button>
+      </div>
+      <ArticleFilters filters={filters} onChange={handleChaneFilter} />
+
+      {isLoading ? (
+        <p className="text-muted-foreground">Chargement...</p>
+      ) : (
+        <>
+          <ArticleTable articles={data?.data ?? []} />
+          {pagination && pagination.totalPages > 1 && (
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">
+                {pagination.total} articles — page {pagination.page} /
+                {pagination.totalPages}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!pagination.hasPreviousPage}
+                  onClick={() => setPage(page - 1)}
+                >
+                  <ChevronLeft size={16} /> Précédent
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!pagination.hasNextPage}
+                  onClick={() => setPage(page + 1)}
+                >
+                  Suivant <ChevronRight size={16} />
+                </Button>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
 }
