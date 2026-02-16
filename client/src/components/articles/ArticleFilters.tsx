@@ -8,12 +8,15 @@ import {
 } from "@/components/ui/select";
 import { useCategories } from "@/hooks/useCategories";
 import { useNetworks } from "@/hooks/useNetworks";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 type Filters = {
   search: string;
   status: string;
   categoryId: string;
   networkId: string;
+  featured: string;
 };
 
 type Props = {
@@ -86,6 +89,19 @@ export default function ArticleFilters({ filters, onChange }: Props) {
           ))}
         </SelectContent>
       </Select>
+
+      <div className="flex items-center gap-2">
+        <Switch
+          id="featured"
+          checked={filters.featured === "true"}
+          onCheckedChange={(checked) =>
+            handleChange("featured", checked ? "true" : "")
+          }
+        />
+        <Label htmlFor="featured" className="text-sm cursor-pointer">
+          Mis en avant
+        </Label>
+      </div>
     </div>
   );
 }

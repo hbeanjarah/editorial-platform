@@ -15,6 +15,7 @@ export default function ArticlesPage() {
     status: "",
     categoryId: "",
     networkId: "",
+    featured: "",
   });
   const [page, setPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -31,6 +32,8 @@ export default function ArticlesPage() {
 
   if (filters.networkId && filters.networkId !== "all")
     queryParams.networkId = filters.networkId;
+
+  if (filters.featured) queryParams.featured = filters.featured;
 
   const { data, isLoading } = useGetArticles(queryParams);
   const pagination = data?.pagination;
