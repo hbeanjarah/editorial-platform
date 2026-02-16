@@ -51,7 +51,7 @@ export async function remove(id: string) {
   if (!category) throw new AppError(404, "Category not found");
 
   if (category._count.articles > 0) {
-    throw new AppError(400, "Cannot delete category with associated articles");
+    throw new AppError(409, "Cannot delete category with associated articles");
   }
 
   return prisma.category.delete({ where: { id } });

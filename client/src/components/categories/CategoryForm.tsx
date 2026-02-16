@@ -68,7 +68,9 @@ export default function CategoryForm({
     <Dialog open={open} onOpenChange={(_open) => !_open && onClose()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Créer une catégorie</DialogTitle>
+          <DialogTitle>
+            {category ? "Modifier" : "Créer"} une catégorie
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -116,8 +118,7 @@ export default function CategoryForm({
             <Button
               type="submit"
               disabled={isLoading || !name.trim()}
-              className="bg-brand
-  hover:bg-brand-hover"
+              className="bg-brand hover:bg-brand-hover"
             >
               {isLoading ? "..." : category ? "Modifier" : "Créer"}
             </Button>
