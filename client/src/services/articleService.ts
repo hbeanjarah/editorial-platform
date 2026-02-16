@@ -1,8 +1,21 @@
 import { api } from "./api";
-import type { ArticleStats } from "@/types";
+import type { Article, ArticleStats } from "@/types";
 
 export async function getStats(): Promise<ArticleStats> {
   const { data } = await api.get("/articles/stats");
 
+  return data;
+}
+
+export async function createArticle(body: {
+  title: string;
+  content: string;
+  excerpt: string;
+  author: string;
+  categoryIds: string[];
+  networkId: string;
+  featured?: boolean;
+}): Promise<Article> {
+  const { data } = await api.post("/articles", body);
   return data;
 }
