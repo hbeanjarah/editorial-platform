@@ -68,3 +68,8 @@ export interface Notification {
   articleId: string;
   article: { id: string; title: string };
 }
+
+export interface SendNotificationResponse {
+  notification: Notification;
+  htmlContent: string;
+}
