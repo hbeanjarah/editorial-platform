@@ -1,5 +1,10 @@
 import { api } from "./api";
-import type { Article, ArticleStats, PaginatedResponse } from "@/types";
+import type {
+  Article,
+  ArticleFormData,
+  ArticleStats,
+  PaginatedResponse,
+} from "@/types";
 
 export async function getStats(): Promise<ArticleStats> {
   const { data } = await api.get("/articles/stats");
@@ -7,15 +12,7 @@ export async function getStats(): Promise<ArticleStats> {
   return data;
 }
 
-export async function createArticle(body: {
-  title: string;
-  content: string;
-  excerpt: string;
-  author: string;
-  categoryIds: string[];
-  networkId: string;
-  featured?: boolean;
-}): Promise<Article> {
+export async function createArticle(body: ArticleFormData): Promise<Article> {
   const { data } = await api.post("/articles", body);
 
   return data;
@@ -38,6 +35,21 @@ export async function updateArticleStatus(
   status: string,
 ): Promise<Article> {
   const { data } = await api.patch(`/articles/${id}/status`, { status });
+
+  return data;
+}
+
+export async function getArticleById(id: string): Promise<Article> {
+  const { data } = await api.get(`/articles/${id}`);
+
+  return data;
+}
+
+export async function updateArticle(
+  id: string,
+  body: Partial<ArticleFormData>,
+): Promise<Article> {
+  const { data } = await api.put(`/articles/${id}`, body);
 
   return data;
 }

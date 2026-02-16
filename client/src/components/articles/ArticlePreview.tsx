@@ -3,19 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
 import { useCategories } from "@/hooks/useCategories";
 import { useNetworks } from "@/hooks/useNetworks";
-
-interface FormData {
-  title: string;
-  content: string;
-  excerpt: string;
-  author: string;
-  categoryIds: string[];
-  networkId: string;
-  featured: boolean;
-}
+import type { ArticleFormData } from "@/types";
 
 interface Props {
-  formData: FormData;
+  formData: ArticleFormData;
 }
 
 export default function ArticlePreview({ formData }: Props) {

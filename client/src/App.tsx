@@ -6,6 +6,7 @@ import NotificationsPage from "@/pages/NotificationsPage";
 import ImportPage from "@/pages/ImportPage";
 import DashboardPage from "@/pages/DashboardPage";
 import ArticleFormPage from "@/pages/ArticlesFormPage";
+import ArticleEditPage from "@/pages/ArticleEditPage";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route index element={<DashboardPage />} />
           <Route path="/articles" element={<ArticlesPage />} />
           <Route path="/articles/new" element={<ArticleFormPage />} />
+          <Route path="/articles/:id/edit" element={<ArticleEditPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/import" element={<ImportPage />} />
