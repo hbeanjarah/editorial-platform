@@ -237,6 +237,38 @@ async function main() {
   ]);
 
   console.log(`Created: ${articles.length} articles`);
+
+  const notifications = await Promise.all([
+    prisma.emailNotification.create({
+      data: {
+        subject:
+          "Nouvel article : L'avenir de l'intelligence artificielle en France",
+        recipients: "redaction@taram.fr, tech@taram.fr",
+        status: "sent",
+        articleId: articles[0].id,
+      },
+    }),
+    prisma.emailNotification.create({
+      data: {
+        subject:
+          "Nouvel article : Stratégies de croissance pour les startups européennes",
+        recipients:
+          "newsletter@taram.fr, partenaires@taram.fr, presse@taram.fr",
+        status: "sent",
+        articleId: articles[1].id,
+      },
+    }),
+    prisma.emailNotification.create({
+      data: {
+        subject: "Nouvel article : La cybersécurité au cœur des préoccupations",
+        recipients: "securite@taram.fr",
+        status: "failed",
+        articleId: articles[4].id,
+      },
+    }),
+  ]);
+
+  console.log(`Created: ${notifications.length} notifications`);
 }
 
 main()
