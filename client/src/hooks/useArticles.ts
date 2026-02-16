@@ -5,8 +5,11 @@ import {
   getAllArticles,
   deleteArticle,
   updateArticleStatus,
+  updateArticle,
+  getArticleById,
 } from "@/services/articleService";
 import { queryKeys } from "@/lib/queryKeys";
+import type { ArticleFormData } from "@/types";
 
 export function useArticleStats() {
   return useQuery({
@@ -52,5 +55,30 @@ export function useUpdateArticleStatus() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.articles.all({}) });
     },
+  });
+}
+
+export function useUpdateArticle() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      id,
+      body,
+    }: {
+      id: string;
+      body: Partial<ArticleFormData>;
+    }) => updateArticle(id, body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.articles.all({}) });
+    },
+  });
+}
+
+export function useGetArticleById(id: string) {
+  return useQuery({
+    queryKey: queryKeys.articles.detail(id),
+    queryFn: () => getArticleById(id),
+    enabled: !!id,
   });
 }

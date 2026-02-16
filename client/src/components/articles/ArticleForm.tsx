@@ -14,20 +14,11 @@ import { X } from "lucide-react";
 
 import { useCategories } from "@/hooks/useCategories";
 import { useNetworks } from "@/hooks/useNetworks";
-
-interface FormData {
-  title: string;
-  content: string;
-  excerpt: string;
-  author: string;
-  categoryIds: string[];
-  networkId: string;
-  featured: boolean;
-}
+import type { ArticleFormData } from "@/types";
 
 interface Props {
-  formData: FormData;
-  onChange: (data: FormData) => void;
+  formData: ArticleFormData;
+  onChange: (data: ArticleFormData) => void;
 }
 
 export default function ArticleForm({ formData, onChange }: Props) {
@@ -35,7 +26,7 @@ export default function ArticleForm({ formData, onChange }: Props) {
   const { data: networks } = useNetworks();
 
   const handleChange = (
-    field: keyof FormData,
+    field: keyof ArticleFormData,
     value: string | boolean | string[],
   ) => {
     onChange({ ...formData, [field]: value });

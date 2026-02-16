@@ -51,3 +51,10 @@ export interface PaginatedResponse<T> {
     hasPreviousPage: boolean;
   };
 }
+
+export type ArticleFormData = Pick<
+  Article,
+  "title" | "content" | "excerpt" | "author" | "networkId" | "featured"
+> & {
+  categoryIds: string[];
+};
