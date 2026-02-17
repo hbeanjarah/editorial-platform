@@ -83,8 +83,7 @@ export default function CategoryList() {
         <h1 className="text-2xl font-bold">Catégories</h1>
         <Button
           onClick={() => setFormOpen(true)}
-          className="bg-brand
-  hover:bg-brand-hover"
+          className="bg-brand hover:bg-brand-hover"
         >
           <Plus size={16} className="mr-1" /> Nouvelle catégorie
         </Button>
@@ -102,10 +101,7 @@ export default function CategoryList() {
                   />
                   <div>
                     <p className="font-medium">{cat.name}</p>
-                    <p
-                      className="text-sm text-muted-foreground
-  mt-0.5"
-                    >
+                    <p className="text-sm text-muted-foreground mt-0.5">
                       {cat.description}
                     </p>
                   </div>
