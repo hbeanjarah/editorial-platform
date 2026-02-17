@@ -48,6 +48,11 @@ export default function ArticleForm({ formData, onChange }: Props) {
           onChange={(e) => handleChange("title", e.target.value)}
           placeholder="Titre de l'article"
         />
+        {formData.title.length > 0 && formData.title.length < 5 && (
+          <p className="text-xs text-orange-500 mt-1">
+            Minimum 5 caractères ({formData.title.length}/5)
+          </p>
+        )}
       </div>
 
       <div>
@@ -58,6 +63,11 @@ export default function ArticleForm({ formData, onChange }: Props) {
           placeholder="Contenu de l'article..."
           rows={10}
         />
+        {formData.content.length > 0 && formData.content.length < 50 && (
+          <p className="text-xs text-orange-500 mt-1">
+            Minimum 50 caractères ({formData.content.length}/50)
+          </p>
+        )}
       </div>
 
       <div>
@@ -99,7 +109,15 @@ export default function ArticleForm({ formData, onChange }: Props) {
       </div>
 
       <div>
-        <Label>Catégories</Label>
+        <div className="flex gap-1 items-baseline">
+          <Label>Catégories</Label>
+          {formData.categoryIds.length === 0 && (
+            <p className="text-xs text-muted-foreground mt-1">
+              (Sélectionnez au moins une catégorie)
+            </p>
+          )}
+        </div>
+
         <div className="flex flex-wrap gap-2 mt-2">
           {categories?.map((cat) => {
             const selected = formData.categoryIds.includes(cat.id);

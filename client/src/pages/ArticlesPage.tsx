@@ -50,8 +50,7 @@ export default function ArticlesPage() {
         <h1 className="text-2xl font-bold">Articles</h1>
         <Button
           onClick={() => navigate("/articles/new")}
-          className="bg-brand
-  hover:bg-brand-hover cursor-pointer"
+          className="bg-brand hover:bg-brand-hover cursor-pointer"
         >
           <Plus size={16} className="mr-1" /> Nouvel article
         </Button>

@@ -32,8 +32,7 @@ export default function RecentArticles() {
                 </p>
               </div>
               <span
-                className={`text-xs font-medium px-2 py-0.5 rounded-full
-  whitespace-nowrap ${statusLabel[a.status].class}`}
+                className={`text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${statusLabel[a.status].class}`}
               >
                 {statusLabel[a.status].text}
               </span>
