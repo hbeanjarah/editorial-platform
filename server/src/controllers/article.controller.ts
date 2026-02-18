@@ -4,7 +4,9 @@ import * as articleService from "../services/article.service";
 
 export async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await articleService.getAll(req.query as any);
+    const result = await articleService.getAll(
+      req.query as Record<string, unknown>,
+    );
 
     res.json(result);
   } catch (err) {
