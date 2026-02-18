@@ -17,6 +17,11 @@ Installation de pnpm :
 ````bash
 npm install -g pnpm
 
+### Cloner le projet
+```bash
+git clone https://github.com/hbeanjarah/editorial-platform.git
+cd editorial-platform
+
 ## Installation
 
 ### Backend
