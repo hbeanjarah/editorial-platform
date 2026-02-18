@@ -8,6 +8,7 @@ import BulkActions from "@/components/articles/BulkActions";
 import { useArticleFilters } from "@/stores/useArticleStore";
 import { useState } from "react";
 import type { FilterType } from "@/stores/useArticleStore";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export default function ArticlesPage() {
   const navigate = useNavigate();
@@ -27,7 +28,9 @@ export default function ArticlesPage() {
 
   const queryParams: Record<string, string> = { page: String(page) };
 
-  if (search) queryParams.search = search;
+  const debouncedSearch = useDebounce(search, 300);
+
+  if (debouncedSearch) queryParams.search = debouncedSearch;
 
   if (status && status !== "all") queryParams.status = status;
 

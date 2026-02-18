@@ -33,10 +33,7 @@ export default function NotificationHistory() {
                   <tr key={n.id} className="border-b">
                     <td className="p-3 font-medium">{n.article.title}</td>
                     <td className="p-3 text-muted-foreground">{n.subject}</td>
-                    <td
-                      className="p-3
-  text-muted-foreground"
-                    >
+                    <td className="p-3 text-muted-foreground">
                       {n.recipients.split(",").length}
                     </td>
                     <td className="p-3 text-muted-foreground">
