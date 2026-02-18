@@ -3,44 +3,45 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { useGetArticles } from "@/hooks/useArticles";
 import ArticleFilters from "@/components/articles/ArticleFilters";
-import { useState } from "react";
 import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import BulkActions from "@/components/articles/BulkActions";
+import { useArticleFilters } from "@/stores/useArticleStore";
+import { useState } from "react";
+import type { FilterType } from "@/stores/useArticleStore";
 
 export default function ArticlesPage() {
   const navigate = useNavigate();
 
-  const [filters, setFilters] = useState({
-    search: "",
-    status: "",
-    categoryId: "",
-    networkId: "",
-    featured: "",
-  });
-  const [page, setPage] = useState(1);
+  const {
+    search,
+    status,
+    categoryId,
+    networkId,
+    featured,
+    page,
+    setFilter,
+    setPage,
+  } = useArticleFilters();
+
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const queryParams: Record<string, string> = { page: String(page) };
 
-  if (filters.search) queryParams.search = filters.search;
+  if (search) queryParams.search = search;
 
-  if (filters.status && filters.status !== "all")
-    queryParams.status = filters.status;
+  if (status && status !== "all") queryParams.status = status;
 
-  if (filters.categoryId && filters.categoryId !== "all")
-    queryParams.categoryId = filters.categoryId;
+  if (categoryId && categoryId !== "all") queryParams.categoryId = categoryId;
 
-  if (filters.networkId && filters.networkId !== "all")
-    queryParams.networkId = filters.networkId;
+  if (networkId && networkId !== "all") queryParams.networkId = networkId;
 
-  if (filters.featured) queryParams.featured = filters.featured;
+  if (featured) queryParams.featured = featured;
 
   const { data, isLoading } = useGetArticles(queryParams);
   const pagination = data?.pagination;
 
-  const handleChangeFilter = (curentFilter: typeof filters) => {
-    setFilters(curentFilter);
-    setPage(1);
+  const handleChangeFilter = (filters: FilterType) => {
+    Object.entries(filters).forEach(([key, value]) => setFilter(key, value));
     setSelectedIds([]);
   };
 
@@ -55,7 +56,10 @@ export default function ArticlesPage() {
           <Plus size={16} className="mr-1" /> Nouvel article
         </Button>
       </div>
-      <ArticleFilters filters={filters} onChange={handleChangeFilter} />
+      <ArticleFilters
+        filters={{ search, status, categoryId, networkId, featured }}
+        onChange={handleChangeFilter}
+      />
 
       {isLoading ? (
         <p className="text-muted-foreground">Chargement...</p>
