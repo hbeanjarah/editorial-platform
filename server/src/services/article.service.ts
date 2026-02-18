@@ -27,7 +27,7 @@ export async function getAll(filter: ArticleFilter) {
     Number(filter.limit) || 20,
   );
 
-  const where: any = {};
+  const where: Record<string, unknown> = {};
 
   if (filter.status) where.status = filter.status;
   if (filter.networkId) where.networkId = filter.networkId;
