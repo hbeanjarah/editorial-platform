@@ -25,12 +25,11 @@ export default function Sidebar() {
             to={to}
             end={to === "/"}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-  transition-colors ${
-    isActive
-      ? "bg-brand text-white"
-      : "text-zinc-400 hover:text-white hover:bg-white/5"
-  }`
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? "bg-brand text-white"
+                  : "text-zinc-400 hover:text-white hover:bg-white/5"
+              }`
             }
           >
             <Icon size={18} />
